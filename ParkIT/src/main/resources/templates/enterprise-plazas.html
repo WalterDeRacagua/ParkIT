@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html class="h-100" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <th:block th:replace="~{fragments/head.html :: header}" />
+    <title>Plazas del Parking</title>
+</head>
+
+<body class="d-flex flex-column h-100">
+    <header th:replace="~{fragments/nav.html :: nav}"></header>
+
+    <div class="container-fluid row pt-3">
+        <div th:if="${success}">
+            <div class="alert alert-success">
+                <p th:text="${success}"></p>
+            </div>
+        </div>
+        <div th:if="${error}">
+            <div class="alert alert-danger">
+                <p th:text="${error}"></p>
+            </div>
+        </div>
+    </div>
+
+    <div class="container-fluid p-5">
+        <h2>Plazas del parking: <span th:text="${parking.name}">Nombre del Parking</span></h2>
+        <p><strong>Dirección:</strong> <span th:text="${parking.address}">Dirección</span></p>
+        <!-- Ejemplo de tabla -->
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th>Número de plaza</th>
+                    <th>Libre</th>
+                    <th>Reservas</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="spot : ${spots}">
+                    <td th:text="${spot.id}">1</td>
+                    <td th:id=" 'state-' + ${spot.id}">No</td>
+                    <td th:id="'reserves-' + ${spot.id}">
+                            <ul class="mb-0" style="max-height: 100px; overflow-y: auto;">
+                                <li th:each="reserva : ${spot.reserves}" th:text="${reserva}"></li>
+                            </ul>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <a class="btn btn-primary m-1" th:href="@{/enterprise/parkings}">Volver a mis parkings</a>
+    </div>
+
+    <footer th:replace="~{fragments/footer.html :: footer}"></footer>
+
+    <script th:inline="javascript">
+        var spots = /*[[${spotTransfers}]]*/[];
+    </script>
+
+    <script th:src="@{/js/enterprise-plazas.js}"></script>
+</body>
+
+</html>
